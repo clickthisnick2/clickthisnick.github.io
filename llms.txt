@@ -8,7 +8,7 @@ Personal site of Nick Smith, a software developer. The working site is https://w
 - Blog (/blog/) lists posts. Each post has a "Read More" link and a "Back To Blog" link.
 - Projects (/projects/) shows project names, screenshots, and short descriptions.
 - Contact (/contact/) shows the email address admin@clickthisnick.com.
-- Recruiter intake (/recruiters/) is a form. Fill every required field and press Submit. The page announces that it is sending, posts the answers, then opens the follow-up page with a resume download and a Calendly link.
+- Recruiter intake (/recruiters/) is a form. Fill every required field and press Submit. The page announces that it is sending, posts the answers, then opens the follow-up page with a resume download and a Calendly link. Browsers that support WebMCP also expose this form as the tool submit-recruiter-intake. The tool does not submit by itself; a person still presses Submit.
 - Feed: /feed.xml
 - Missing pages use /404.html, which links back home.
 

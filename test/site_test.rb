@@ -33,6 +33,7 @@ class SiteTest < Minitest::Test
     assert_includes title, "Home"
     assert_includes title, "Nick Smith"
     assert_equal "https://www.clickthisnick.com/", home.at('link[rel="canonical"]')["href"]
+    assert_equal "strict-origin-when-cross-origin", home.at('meta[name="referrer"]')["content"]
     assert_equal 1, home.css("h1").size
     assert_includes home.at("#hero-heading").text, "I Know Software. How Can I Help You?"
     %w[release-engineer vulnerability-testing development-experience knowledge-transfer].each do |id|
@@ -97,6 +98,8 @@ class SiteTest < Minitest::Test
       src = image["src"]
       assert_match %r{\A/resources/projects/}, src
       assert File.file?(File.join(SITE, src)), src
+      refute_nil image["width"]
+      refute_nil image["height"]
     end
 
     contact = page("contact/index.html")
@@ -127,6 +130,9 @@ class SiteTest < Minitest::Test
     assert_equal "hidden_iframe", form["target"]
     assert_includes form["action"], "1FAIpQLScPT_q2aK4LaT4x3jI3LEa40yCvjZXSwWVwPoTdLBTmET0AEA/formResponse"
     assert_equal "submit", doc.at("#recruiter-submit")["type"]
+    assert_equal "submit-recruiter-intake", form["toolname"]
+    assert_includes form["tooldescription"], "Do not submit automatically"
+    refute form.attribute("toolautosubmit")
     refute_match(/onclick\s*=\s*["']redirect\(\)/, source)
 
     {
@@ -142,7 +148,13 @@ class SiteTest < Minitest::Test
       refute_nil input.attribute("required")
       label = doc.at("label[for='#{id}']")
       refute_empty label.text.strip
+      refute_empty input["toolparamdescription"].to_s
+      error = doc.at("##{id}-error")
+      assert error, "#{id} error"
+      assert_equal "false", input["aria-invalid"]
+      assert_equal "#{id}-error", input["data-error"]
     end
+    assert_includes source, "input:user-invalid"
 
     assert_equal "1", doc.at('input[name="fvv"]')["value"]
     assert_equal "0", doc.at('input[name="pageHistory"]')["value"]
@@ -192,6 +204,10 @@ class SiteTest < Minitest::Test
     refute_match(/onclick=["']signaturePad\.clear\(\)/, source)
     assert_includes source, 'id="clear-signature"'
     assert_includes source, "https://www.clickthisnick.com/foo.html"
+    pad = doc.at('script[src*="signature_pad@4.1.7"]')
+    assert_includes pad["integrity"], "sha384-"
+    assert_equal "anonymous", pad["crossorigin"]
+    assert_equal "no-referrer", pad["referrerpolicy"]
   end
 
   def test_tooling_is_not_published_and_llms_txt_is

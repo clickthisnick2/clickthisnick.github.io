@@ -65,6 +65,26 @@
       .jumbotron h6 {
         color: #000;
       }
+      img {
+        height: auto;
+      }
+      .field-error {
+        display: none;
+        color: #8a1538;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+      }
+      input:user-invalid,
+      select:user-invalid,
+      textarea:user-invalid {
+        outline: 2px solid #8a1538;
+        outline-offset: 1px;
+      }
+      input:user-invalid + .field-error,
+      select:user-invalid + .field-error,
+      textarea:user-invalid + .field-error {
+        display: block;
+      }
     </style>
 
     <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
