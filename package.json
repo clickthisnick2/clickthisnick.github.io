@@ -1,0 +1,14 @@
+{
+  "name": "clickthisnick",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static checks for clickthisnick.com",
+  "scripts": {
+    "check": "bash script/check"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "html-validate": "^11.21.1",
+    "linkinator": "^8.1.0"
+  }
+}
